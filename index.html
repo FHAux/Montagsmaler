@@ -6,10 +6,24 @@
     <script src="https://autobahn.s3.amazonaws.com/autobahnjs/latest/autobahn.min.jgz"></script>
     <script src="js/main.js"></script>
     <script src="js/zeichnen.js"></script>
+    <script src="js/chat.js"></script>
   </head>
-  <body>
+  <body onload="">
     <canvas id="zeichenflaeche" width="500" height="500">
       Ihr Browser unterstützt HTML5 leider nicht!
     </canvas>
+    <div id="chatFenster">
+      <div id="chatAnsicht">
+        <textarea id="ansicht" readonly> </textarea>
+      </div>
+      <div id="eingabefeld">
+        <input id="eingabe" placeholder="Raten...">
+      </div>
+      <div>
+        <button id="sendenButton">
+          Senden
+        </button>
+      </div>
+    </div>
   </body>
 </html>
