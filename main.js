@@ -13,7 +13,7 @@ this.$cc$ =
 
 (function($cc$, window, document)
 {
-  function main()
+  function main(init)
   {
     /**
      * @class
@@ -21,8 +21,9 @@ this.$cc$ =
      */
 
     // Zeichenklasse initialisieren
-    var zeichnen = new $cc$.game.zeichnen(this),
-        chat = new $cc$.game.chat(this);
+    var zeichnen = new $cc$.game.zeichnen(this, init),
+        chat = new $cc$.game.chat(this),
+        canvas = document.getElementById("zeichenflaeche");
 
     AUTOBAHN_DEBUG = true;
     DEBUG = false;
@@ -92,6 +93,48 @@ this.$cc$ =
       {
         chat.anzeigen(eingabe);
       };
+      
+      /**
+       * @method
+       * @name  $cc$.game.main#onfarbauswahl
+       * 
+       * @param {Object} farbe
+       *        Enthält die ausgewählte Farbe
+       * 
+       * Wird ausgeführt wenn auf einem anderen Client die Farbe gewechselt
+       * und ändert sie auf dem aktuellen Client ebenfalls.
+       */
+      function onfarbauswahl(farbe)
+      {
+        zeichnen.farbAuswahl(farbe[0]);
+      };
+      
+      /**
+       * @method
+       * @name  $cc$.game.main#onclear
+       * 
+       * Wird ausgeführt wenn auf einem anderen Client das Canvas gecleart wird
+       * und cleart es auf dem aktuellen Client ebenfalls.
+       */
+      function onclear()
+      {
+        zeichnen.clear(canvas);
+      };
+      
+      /**
+       * @method
+       * @name  $cc$.game.main#onstaerkeauswahl
+       * 
+       * @param {Object} staerke
+       *        Enthält die ausgewählte Stärke
+       * 
+       * Wird ausgeführt wenn auf einem anderen Client die Stärke gewechselt
+       * und ändert sie auf dem aktuellen Client ebenfalls.
+       */
+      function onstaerkeauswahl(staerke)
+      {
+        zeichnen.staerkeAuswahl(staerke[0]);
+      };
 
       // Für die verschiedenen Themen registrieren
       //
@@ -102,7 +145,7 @@ this.$cc$ =
           }, function(error)
           {
             console.log(error);
-          });
+      });
 
       session.subscribe('de.copycat.mousemove', onmousemove).then(
           function(subscription)
@@ -111,7 +154,7 @@ this.$cc$ =
           }, function(error)
           {
             console.log(error);
-          });
+      });
 
       session.subscribe('de.copycat.senden', onsenden).then(
           function(subscription)
@@ -120,7 +163,34 @@ this.$cc$ =
           }, function(error)
           {
             console.log(error);
-          });
+      });
+      
+      session.subscribe('de.copycat.farbauswahl', onfarbauswahl).then(
+          function(subscription)
+          {
+            console.log("ok, subscribed with ID " + subscription.id);
+          }, function(error)
+          {
+            console.log(error);
+      });
+      
+      session.subscribe('de.copycat.clear', onclear).then(
+          function(subscription)
+          {
+            console.log("ok, subscribed with ID " + subscription.id);
+          }, function(error)
+          {
+            console.log(error);
+      });
+      
+      session.subscribe('de.copycat.staerkeauswahl', onstaerkeauswahl).then(
+          function(subscription)
+          {
+            console.log("ok, subscribed with ID " + subscription.id);
+          }, function(error)
+          {
+            console.log(error);
+      });
 
     };
 
@@ -201,13 +271,87 @@ this.$cc$ =
       {
         console.log("cannot publish: no session");
       }
-    }
+    },
+    
+    /**
+     * @method
+     * @name  $cc$.game.main#publishfarbauswahl
+     * 
+     * @param {Object} farbe
+     *        Enthält die ausgewählte Farbe
+     * 
+     * Wird ausgeführt wenn die Farbe gewechselt wird und überträgt die
+     * ausgewählte Farbe.
+     */
+    publishfarbauswahl : function(farbe)
+    {
+      if (this.connection.session)
+      {
+        this.connection.session.publish("de.copycat.farbauswahl",
+        [ farbe ]);
+      } else
+      {
+        console.log("cannot publish: no session");
+      }
+    },
+    
+    /**
+     * @method
+     * @name  $cc$.game.main#publishclear
+     * 
+     * Wird ausgeführt wenn das Canvas gecleart wird.
+     */
+    publishclear : function()
+    {
+      if (this.connection.session)
+      {
+        this.connection.session.publish("de.copycat.clear");
+      } else
+      {
+        console.log("cannot publish: no session");
+      }
+    },
+    
+    /**
+     * @method
+     * @name  $cc$.game.main#publishstaerkeauswahl
+     * 
+     * @param {Object} staerke
+     *        Enthält die ausgewählte Stärke
+     * 
+     * Wird ausgeführt wenn die Stärke gewechselt wird und überträgt die
+     * ausgewählte Stärke.
+     */
+    publishstaerkeauswahl : function(staerke)
+    {
+      if (this.connection.session)
+      {
+        this.connection.session.publish("de.copycat.staerkeauswahl",
+        [ staerke ]);
+      } else
+      {
+        console.log("cannot publish: no session");
+      }
+    },
 
   };
 
   window.onload = function()
   {
-    new main();
+    var json = "json/init.json";
+    //new main();
+
+    var xhr = new XMLHttpRequest();
+  
+    xhr.onload  = function() {
+      new main(JSON.parse(this.response));
+      }; 
+    xhr.onerror = function() {
+      throw new Error(INIT_FILE + " not found");
+      }; 
+    xhr.overrideMimeType("application/json");  
+    xhr.open("GET", json, true);
+    xhr.send();
   };
 
 }(this.$cc$, this.window, this.document));
