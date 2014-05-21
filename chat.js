@@ -50,7 +50,7 @@
      */
     anzeigen : function(nachricht)
     {
-      this.ansicht.value += nachricht; // Zeilenumbruch?
+      this.ansicht.value += nachricht + "\n"; // Zeilenumbruch?
     },
 
     /**
