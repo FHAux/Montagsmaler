@@ -1,0 +1,16 @@
+{ "farben": 
+  { "rot":     "#ff0000",
+    "gruen":   "#00cc00",
+    "blau":    "#0033cc",
+    "gelb":    "#ffff33",
+    "lila":    "#cc00ff",
+    "grau":    "#999",
+    "schwarz": "#000"
+  },
+  "linienstaerken":
+  { "duenn": 1,
+    "normal": 3,
+    "breit": 5,
+    "fett": 7
+  }
+}
