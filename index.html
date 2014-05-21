@@ -2,28 +2,55 @@
 <html>
   <head>
     <title>Copycat</title>
+    <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="css/main.css">
-    <script src="https://autobahn.s3.amazonaws.com/autobahnjs/latest/autobahn.min.jgz"></script>
+    <script src="lib/autobahn.min.jgz"></script>
     <script src="js/main.js"></script>
     <script src="js/zeichnen.js"></script>
     <script src="js/chat.js"></script>
-  </head>
-  <body onload="">
-    <canvas id="zeichenflaeche" width="500" height="500">
-      Ihr Browser unterstützt HTML5 leider nicht!
-    </canvas>
-    <div id="chatFenster">
-      <div id="chatAnsicht">
-        <textarea id="ansicht" readonly> </textarea>
-      </div>
-      <div id="eingabefeld">
-        <input id="eingabe" placeholder="Raten...">
-      </div>
-      <div>
-        <button id="sendenButton">
-          Senden
-        </button>
-      </div>
-    </div>
+    </head>
+  <body>
+  
+  <div id="wrapper">
+    <section id="left">
+        <!-- Chat ANFANG -->
+        <div id="chatFenster">
+            <textarea id="ansicht" name="ausgabe" readonly></textarea>
+            <input id="eingabe" name="eingabe" placeholder="Begriff eingeben...">
+            <button id="sendenButton" value="senden">Senden</button>
+        </div>
+        <!-- Chat ENDE -->
+      </section>
+  
+      <section id="right">
+        <!-- Farben ANFANG -->
+        <div id="buttonfarbdiv">
+          <button id="clearBtn">Clear</button>
+          <button id="rotBtn">Rot</button>
+          <button id="gruenBtn">Grün</button>
+          <button id="blauBtn">Blau</button>
+          <button id="gelbBtn">Gelb</button>
+          <button id="lilaBtn">Lila</button>
+          <button id="grauBtn">Grau</button>
+          <button id="schwarzBtn">Schwarz</button>
+        </div>
+        <!-- Farben ENDE -->
+        
+        <!-- Linienstärke ANFANG -->
+        <div id="buttonbreitediv">
+          <button id="duennBtn">Dünn</button>
+          <button id="normalBtn">Normal</button>
+          <button id="breitBtn">Breit</button>
+          <button id="fettBtn">Fett</button>
+        </div>
+        <!-- Linienstärke Ende -->
+        
+        <canvas id="zeichenflaeche" width="640">
+          Ihr Browser unterstützt HTML5 leider nicht!
+        </canvas>
+      </section>
+
+  </div>
+    
   </body>
 </html>
