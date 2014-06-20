@@ -14,17 +14,19 @@
    * @name  $cc$.game.formular
    */
   
-  function formular(init)
+  function formular(init, app)
   {
     var loginForm      = document.getElementById("Login"),
         regForm        = document.getElementById("Registrierung"),
         loginFunktion  = this.login,
         regFunktion    = this.registrierung,
-        weiterFunktion = this.weiterleiten;
+        weiterFunktion = this.weiterleiten,
+        test = app;
     
     this.init = init;
+    this.app = app;
     
-    loginForm.onsubmit = function(){return loginFunktion(weiterFunktion);};
+    loginForm.onsubmit = function(){return loginFunktion(weiterFunktion, test);};
     regForm.onsubmit   = function(){return regFunktion(weiterFunktion);};
     
     
@@ -32,7 +34,7 @@
   
   formular.prototype =
   {
-      login: function(weiterFunktion)
+      login: function(weiterFunktion, app)
       {
         var meldung_log = document.Login;
         
@@ -40,7 +42,7 @@
         if (meldung_log.benutzer_log.value == "")
         {
           alert("Bitte geben Sie Ihren Benutzernamen ein!");
-          meldung_log.benutzer.focus();
+          meldung_log.benutzer_log.focus();
           return false;
         } else if (meldung_log.passwort_log.value == "") // Passwort-Abfrage
         {
@@ -49,10 +51,20 @@
           return false;
         } else
         {
-          alert("alles toll");
-          weiterFunktion();
-          return false;
-        };
+         var connection = app.connection; 
+          if (connection.session) {
+              connection.session.call("de.copycat.check_login", [meldung_log.benutzer_log.value, meldung_log.passwort_log.value]).then(
+                 function (success) {
+                    console.log("success");
+                 },
+                 connection.session.log
+              );
+           } else {
+              console.log("can't vote: no connection");
+           }
+            //weiterFunktion();
+            return false;
+          };
         
       },
       

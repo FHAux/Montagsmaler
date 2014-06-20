@@ -15,9 +15,9 @@
      */
     
     // Zeichenklasse initialisieren
-    var zeichnen = new $cc$.game.zeichnen(this, init),
-        chat = new $cc$.game.chat(this),
-        canvas = document.getElementById("zeichenflaeche");
+   /* var zeichnen = new $cc$.game.zeichnen(this, init),
+        chat = new $cc$.game.chat(this),*/
+    var canvas = document.getElementById("zeichenflaeche");
     
     AUTOBAHN_DEBUG = true;
     DEBUG = false;
@@ -156,6 +156,22 @@
       {
         zeichnen.aufgeben();
       };
+      
+      /**
+       * @method
+       * @name  $cc$.game.main#onverwarnen
+       * 
+       * @param {Object} verwarnt
+       *        Enthält einen Boolean, der anzeigt, ob der Zeichner bereits
+       *        verwarnt wurde
+       * 
+       * Wird ausgeführt wenn auf einem anderen Client der Zeichner verwarnt
+       * wurde und zeigt das Pop-Up auf dem aktuellen Client ebenfalls an.
+       */
+      function onlogin(boolean)
+      {
+        console.log(boolean);
+      };
 
       // Für die verschiedenen Themen registrieren
       //
@@ -223,6 +239,15 @@
       });
       
       session.subscribe('de.copycat.aufgeben', onaufgeben).then(
+          function(subscription)
+          {
+            //console.log("ok, subscribed with ID " + subscription.id);
+          }, function(error)
+          {
+            console.log(error);
+      });
+      
+      session.subscribe('de.copycat.login', onlogin).then(
           function(subscription)
           {
             //console.log("ok, subscribed with ID " + subscription.id);

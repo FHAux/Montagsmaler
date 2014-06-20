@@ -25,7 +25,8 @@ this.$cc$ =
       new $cc$.game.appCopycat(init);
     } else
     {
-      new $cc$.game.formular(init);
+      var app = new $cc$.game.appCopycat(init);
+      new $cc$.game.formular(init, app);
     }
   };
   
