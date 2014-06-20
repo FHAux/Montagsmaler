@@ -16,3 +16,5 @@ gesuchte Begriff interaktiv über eine Zeichenfläche interpretiert.
 
 Die Implementierung erfolgt mit Hilfe von Javascript und Python.
 
+Link zum Projekt: http://ia-netz.informatik.fh-augsburg.de:8080/
+
