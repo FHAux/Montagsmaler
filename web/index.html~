@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <link rel="stylesheet" type="text/css" href="main.css">
+      <script src="https://autobahn.s3.amazonaws.com/autobahnjs/latest/autobahn.min.jgz"></script>
+      <script src="main.js"></script>
+   </head>
+   <body>
+      <h1>Testeeeeeeeeeeen</h1>
+      <p>Open console (hit F12) ..</p>
+      <button onclick="publish1()">Publish</button>
+      <canvas id="zeichenflaeche" width="500" height="500">
+         Ihr Browser unterstützt HTML5 leider nicht!
+      </canvas>
+   </body>
+</html>

@@ -135,13 +135,40 @@ this.$cc$ =
       {
         zeichnen.staerkeAuswahl(staerke[0]);
       };
+      
+      /**
+       * @method
+       * @name  $cc$.game.main#onverwarnen
+       * 
+       * @param {Object} verwarnt
+       *        Enthält einen Boolean, der anzeigt, ob der Zeichner bereits
+       *        verwarnt wurde
+       * 
+       * Wird ausgeführt wenn auf einem anderen Client der Zeichner verwarnt
+       * wurde und zeigt das Pop-Up auf dem aktuellen Client ebenfalls an.
+       */
+      function onverwarnen(verwarnt)
+      {
+        chat.verwarnen(verwarnt);
+      };
+      
+      /**
+       * @method
+       * @name  $cc$.game.main#onaufgeben
+       * 
+       * Wird ausgeführt wenn der Zeichner aufgibt und beendet die Zeichenrunde.
+       */
+      function onaufgeben()
+      {
+        zeichnen.aufgeben();
+      };
 
       // Für die verschiedenen Themen registrieren
       //
       session.subscribe('de.copycat.mousedown', onmousedown).then(
           function(subscription)
           {
-            console.log("ok, subscribed with ID " + subscription.id);
+            //console.log("ok, subscribed with ID " + subscription.id);
           }, function(error)
           {
             console.log(error);
@@ -150,7 +177,7 @@ this.$cc$ =
       session.subscribe('de.copycat.mousemove', onmousemove).then(
           function(subscription)
           {
-            console.log("ok, subscribed with ID " + subscription.id);
+            //console.log("ok, subscribed with ID " + subscription.id);
           }, function(error)
           {
             console.log(error);
@@ -159,7 +186,7 @@ this.$cc$ =
       session.subscribe('de.copycat.senden', onsenden).then(
           function(subscription)
           {
-            console.log("ok, subscribed with ID " + subscription.id);
+            //console.log("ok, subscribed with ID " + subscription.id);
           }, function(error)
           {
             console.log(error);
@@ -168,7 +195,7 @@ this.$cc$ =
       session.subscribe('de.copycat.farbauswahl', onfarbauswahl).then(
           function(subscription)
           {
-            console.log("ok, subscribed with ID " + subscription.id);
+            //console.log("ok, subscribed with ID " + subscription.id);
           }, function(error)
           {
             console.log(error);
@@ -177,7 +204,7 @@ this.$cc$ =
       session.subscribe('de.copycat.clear', onclear).then(
           function(subscription)
           {
-            console.log("ok, subscribed with ID " + subscription.id);
+            //console.log("ok, subscribed with ID " + subscription.id);
           }, function(error)
           {
             console.log(error);
@@ -186,7 +213,25 @@ this.$cc$ =
       session.subscribe('de.copycat.staerkeauswahl', onstaerkeauswahl).then(
           function(subscription)
           {
-            console.log("ok, subscribed with ID " + subscription.id);
+            //console.log("ok, subscribed with ID " + subscription.id);
+          }, function(error)
+          {
+            console.log(error);
+      });
+      
+      session.subscribe('de.copycat.verwarnen', onverwarnen).then(
+          function(subscription)
+          {
+            //console.log("ok, subscribed with ID " + subscription.id);
+          }, function(error)
+          {
+            console.log(error);
+      });
+      
+      session.subscribe('de.copycat.aufgeben', onaufgeben).then(
+          function(subscription)
+          {
+            //console.log("ok, subscribed with ID " + subscription.id);
           }, function(error)
           {
             console.log(error);
@@ -333,6 +378,46 @@ this.$cc$ =
         console.log("cannot publish: no session");
       }
     },
+    
+    /**
+     * @method
+     * @name  $cc$.game.main#publishverwarnen
+     * 
+     * @param {Object} verwarnt
+     *        Enthält einen Boolean, der anzeigt, ob der Zeichner bereits
+     *        verwarnt wurde
+     * 
+     * Wird ausgeführt wenn auf einem anderen Client der Zeichner verwarnt
+     * wurde und überträgt den Boolean verwarnt.
+     */
+    publishverwarnen : function(verwarnt)
+    {
+      if (this.connection.session)
+      {
+        this.connection.session.publish("de.copycat.verwarnen");
+      } else
+      {
+        console.log("cannot publish: no session");
+      }
+    },
+    
+    /**
+     * @method
+     * @name  $cc$.game.main#publishaufgeben
+     * 
+     * Wird ausgeführt wenn der Zeichner aufgibt und beendet die Zeichenrunde.
+     */
+    publishaufgeben : function()
+    {
+      if (this.connection.session)
+      {
+        this.connection.session.publish("de.copycat.aufgeben",
+        [ ]);
+      } else
+      {
+        console.log("cannot publish: no session");
+      }
+    }
 
   };
 

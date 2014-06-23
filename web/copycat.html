@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+	<head>
+        <title>Copycat</title>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" type="text/css" href="css/main.css">
+        <script src="lib/autobahn.min.jgz"></script>
+        <script src="js/main.js"></script>
+        <script src="js/Zeichnen.js"></script>
+        <script src="js/Chat.js"></script>
+        <script src="js/AppCopycat.js"></script>
+	</head>
+    
+	<body>
+        <div id="wrapper">
+      
+            <header><img src="#" alt="Logo" title="Logo" /></header>
+            
+            <div id="main">
+                <section class="left">
+                    <!-- Mitspieler ANFANG -->
+                    <div id="mitspieler"> </div>
+                    <!-- Mitspieler ENDE -->
+                    
+                    <!-- Chat ANFANG -->
+                    <div id="chatFenster">
+                        <div id="ausgabe"> </div> 
+                        <input id="eingabe" name="eingabe" placeholder="Begriff eingeben..."> 
+                        <input id="sendenBtn" name="Senden" value="senden" type="image" src="img/senden_btn.jpg">
+                        <input id="verwarnenBtn" name="Verwarnen" value="verwarnen" type="image" src="img/verwarnen_btn.jpg">
+                    </div>
+                    <!-- Chat ENDE -->
+                </section>
+                
+                <section class="right">
+                    <!-- Begriff und Countdown ANFANG -->
+                    <div id="begriff"><p>Begriff: Schuhkarton</p></div>
+                    <div id="countdown"><p>00:00</p></div>
+                    <!-- Begriff und Countdown ANFANG -->
+                    
+                    <div id="zeichnen">
+                    	<!-- Farben ANFANG -->
+                        <div id="farben_btn">
+                        	<img id="schwarzBtn" src="img/tools/black_btn.jpg" alt="Schwarz" width="30" height="30" title="Schwarz" />
+                          	<img id="grauBtn" src="img/tools/grey_btn.jpg" alt="Grau" width="30" height="30" title="Grau" />
+                            <img id="gruenBtn" src="img/tools/green_btn.jpg" alt="Grün" width="30" height="30" title="Grün" />
+                            <img id="blauBtn" src="img/tools/blue_btn.jpg" alt="Blau" width="30" height="30" title="Blau" />
+                            <img id="lilaBtn" src="img/tools/pink_btn.jpg" alt="Lila" width="30" height="30" title="Lila" />
+                            <img id="rotBtn" src="img/tools/red_btn.jpg" alt="Rot" width="30" height="30" title="Rot" />
+                            <img id="gelbBtn" src="img/tools/yellow_btn.jpg" alt="Gelb" width="30" height="30" title="Gelb" />
+                            <img id="weissBtn" src="img/tools/white_btn.jpg" alt="Weiß" width="30" height="30" title="Weiß" />
+                        </div>
+                        <!-- Farben ENDE -->
+                        
+                        <!-- Linienstärke ANFANG -->
+                        <div id="pixelbreite_btn">  <!-- buttonbreitediv zu pixelbreite_btn -->
+                          <img id="duennBtn" src="img/tools/breite_1px_btn.jpg" alt="Strichstärke 1px" width="30" height="30" title="Strichstärke 1px" />
+                          <img id="normalBtn" src="img/tools/breite_3px_btn.jpg" alt="Strichstärke 3px" width="30" height="30" title="Strichstärke 3px" />
+                          <img id="breitBtn" src="img/tools/breite_5px_btn.jpg" alt="Strichstärke 5px" width="30" height="30" title="Strichstärke 5px" />
+                          <img id="fettBtn" src="img/tools/breite_7px_btn.jpg" alt="Strichstärke 7px" width="30" height="30" title="Strichstärke 7px" />
+                        </div>
+                        <!-- Linienstärke Ende -->
+                        
+                        <canvas id="zeichenflaeche" width="623" height="448">
+                          Ihr Browser unterstützt HTML5 leider nicht!
+                        </canvas>
+                        
+                        <!-- Zeichner Buttons ANFANG -->
+                        <input id="clearBtn" name="Clear" value="clear" type="image" src="img/clear_btn.jpg">
+                        <input id="aufgebenBtn" name="Aufgeben" value="aufgeben" type="image" src="img/aufgeben_btn.jpg">
+                        <!-- Zeichner Buttons ENDE -->
+                    </div>
+                    
+                </section>
+            </div>
+        </div>
+    </body>
+</html>

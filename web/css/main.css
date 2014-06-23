@@ -1,0 +1,155 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body{
+	color: #000;
+	background: #E3E3E3;
+	font-family: Verdana, sans-serif;
+}
+
+h1{
+	font-size: 125%;
+	margin-bottom: 10px;
+}
+
+button, textarea, input, p{
+	font-family: Verdana, sans-serif;
+	font-size: 0.8em;
+	line-height: 1.5;
+}
+
+table td{
+	width: 90px;
+	padding-bottom: 5px;
+}
+
+table .right_col input{
+	width: 200px;
+}
+
+.stern{
+	color: #FC0004;
+}
+
+input{
+	padding: 5px;
+}
+
+input#loginBtn,
+input#registrierungBtn,
+input#sendenBtn,
+input#verwarnenBtn,
+input#aufgebenBtn,
+input#clearBtn{
+	padding: 0px;
+}
+
+/** Main ANFANG **/
+header{
+	margin-bottom: 10px;
+	border-bottom: #999 solid 1px; 
+}
+
+#wrapper{
+  width: 960px;
+  margin: 20px auto;
+  padding: 30px;
+  background: #FFF;
+  border: #999 solid 1px;
+}
+
+#main{
+	margin-top: 30px;
+}
+
+#registrierung{
+	height: 190px;
+	margin: 50px 0 0 150px;
+}
+
+/** Chat ANFANG **/
+.left{
+  float: left;
+  width: 305px;
+  margin-right: 30px;
+}
+
+#mitspieler, #ausgabe{
+	width: 305px;
+	margin-bottom: 15px;
+	padding: 5px;
+	border: #999 solid 1px;
+	overflow: auto;
+}
+
+#eingabe{
+	width: 295px;
+	margin-bottom: 15px;
+	border: #999 solid 1px;
+}
+
+#mitspieler{
+	height: 100px;
+}
+
+#ausgabe{
+	height: 400px;
+}
+
+#eingabe{
+	height: 30px;
+}
+
+/** Chat ENDE **/
+
+/** Zeichenfläche ANFANG **/
+.right{
+  overflow: hidden;
+  width: 625px;
+}
+
+#begriff, #countdown{
+	padding: 15px 10px;
+	margin-bottom: 20px;
+	border: #999 solid 1px;
+}
+
+#begriff{
+	float: left;
+	width: 520px;
+}
+
+#countdown{
+	float: right;
+}
+
+/** Zeichentools ANFANG **/
+#farben_btn{
+	clear: both;
+  	margin-bottom: 13px;
+}
+
+#farben_btn img, #pixelbreite_btn img{
+	cursor:pointer;
+}
+
+#farben_btn{
+	float: left;
+}
+
+#pixelbreite_btn{
+	float: right;
+}
+/** Zeichentools ENDE **/
+
+canvas {
+	border: #999 solid 1px;
+	margin-bottom: 10px;
+	clear: both;
+}
+/** Zeichenfläche ANFANG **/
+
+
+/** Main ENDE **/

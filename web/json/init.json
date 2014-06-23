@@ -5,7 +5,8 @@
     "gelb":    "#ffff33",
     "lila":    "#cc00ff",
     "grau":    "#999",
-    "schwarz": "#000"
+    "schwarz": "#000",
+    "weiss":   "#fff"
   },
   "linienstaerken":
   { "duenn": 1,

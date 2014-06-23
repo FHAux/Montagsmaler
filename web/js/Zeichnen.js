@@ -2,10 +2,6 @@
  * @module    $cc$
  * @author    Nicole Weiß
  * @author    Katrin Riedelbauch
- * @copyright 2014, Ni/**
- * @module    $cc$
- * @author    Nicole Weiß
- * @author    Katrin Riedelbauch
  * @copyright 2014, Nicole Weiß, Katrin Riedelbauch
  */
 
@@ -31,11 +27,13 @@
         lila = document.getElementById("lilaBtn"),
         grau = document.getElementById("grauBtn"),
         schwarz = document.getElementById("schwarzBtn"),
+        weiss = document.getElementById("weissBtn"),
         clear = document.getElementById("clearBtn"),
         duenn = document.getElementById("duennBtn"),
         normal = document.getElementById("normalBtn"),
         breit = document.getElementById("breitBtn"),
-        fett = document.getElementById("fettBtn");
+        fett = document.getElementById("fettBtn"),
+        aufgeben = document.getElementById("aufgebenBtn");
     
     this.canvas = document.getElementById("zeichenflaeche");
     this.context = this.canvas.getContext("2d");
@@ -87,6 +85,12 @@
       main.publishfarbauswahl("schwarz");
     }).bind(this));
     
+    weiss.addEventListener("click", (function()
+        {
+          this.farbAuswahl("weiss");
+          main.publishfarbauswahl("weiss");
+        }).bind(this));
+    
     clear.addEventListener("click", (function()
     {
       this.clear(this.canvas);
@@ -115,6 +119,11 @@
     {
       this.staerkeAuswahl("fett");
       main.publishstaerkeauswahl("fett");
+    }).bind(this));
+    
+    aufgeben.addEventListener("click", (function(){
+      this.aufgeben();
+      main.publishaufgeben();
     }).bind(this));
     
     // Mauslistener
@@ -230,6 +239,9 @@
         case "schwarz":
           this.aktFarbe = this.init.farben.schwarz;
           break;
+        case "weiss":
+          this.aktFarbe = this.init.farben.weiss;
+          break;
         default:
           console.log("Falsche Farbe:" + farbe);
       }
@@ -274,107 +286,18 @@
         default:
           console.log("Falsche Stärke:" + staerke);
       }
-    }
-  };
-
-  // Im Package platzieren
-  $cc$.game.zeichnen = zeichnen;
-
-}(this.$cc$, this.document));cole Weiß, Katrin Riedelbauch
- */
-
-(function($cc$, document)
-{
-  "use strict";
-
-  /**
-   * @class
-   * @name  $cc$.game.zeichnen
-   * 
-   * @param {Object} main
-   *        Die Main-Klasse wird mitgegeben
-   */
-  function zeichnen(main)
-  {
-    this.canvas = document.getElementById("zeichenflaeche");
-    this.context = this.canvas.getContext("2d");
-    this.isDown = false; // ist die Maustaste noch gedrückt
-
-    // Mauslistener
-    document.addEventListener("mousedown", (function(event)
-    {
-      var mousePos = this.getMousePos(event, this.canvas);
-      this.begin(mousePos);
-      this.isDown = true;
-      main.publishmousedown(mousePos);
-    }).bind(this));
-
-    document.addEventListener("mousemove", (function(event)
-    {
-      if (this.isDown)
-      {
-        var mousePos = this.getMousePos(event, this.canvas);
-        this.moveOn(mousePos);
-        main.publishmousemove(mousePos);
-      }
-    }).bind(this));
-
-    document.addEventListener("mouseup", (function(event)
-    {
-      this.isDown = false;
-    }).bind(this));
-  };
-
-  zeichnen.prototype =
-  {
-    /**
-     * @method
-     * @name  $cc$.game.zeichnen#getMousePos
-     * 
-     * @param {Object} event
-     *        Enthält das von einem Mausklick erzeugte Event.
-     * @paran {Object} canvas
-     *        Enthält die Zeichenfläche
-     * 
-     * Gibt die Mausposition relativ zur Zeichenfläche wieder.
-     */
-    getMousePos : function(event, canvas)
-    {
-      var rect = canvas.getBoundingClientRect();
-      return {
-        x : event.clientX - rect.left,
-        y : event.clientY - rect.top
-      };
     },
-
+    
     /**
      * @method
-     * @name  $cc$.game.zeichnen#begin
+     * @name  $cc$.game.zeichnen#aufgeben
      * 
-     * @param {Object} mousePos
-     *        Enthält die Mausposition relativ zur Zeichenfläche.
-     * 
-     * Beginnt einen neuen Pfad.
+     * Der Zeichner gibt auf.
      */
-    begin : function(mousePos)
+    aufgeben : function()
     {
-      this.context.beginPath();
-      this.context.moveTo(mousePos.x, mousePos.y);
-    },
-
-    /**
-     * @method
-     * @name  $cc$.game.zeichnen#moveOn
-     * 
-     * @param {Object} mousePos
-     *        Enthält die Mausposition relativ zur Zeichenfläche.
-     * 
-     * Zeichnet den Pfad.
-     */
-    moveOn : function(mousePos)
-    {
-      this.context.lineTo(mousePos.x, mousePos.y);
-      this.context.stroke();
+      alert('Der Zeichner gibt auf! Zeichenrunde wird beendet!');
+      //neue Runde!
     }
   };
 
