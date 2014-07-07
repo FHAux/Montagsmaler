@@ -43,7 +43,16 @@ class Copycat(ApplicationSession):
 
    def init_db(self):
 
-##platzhalter
+      ##db = psycopg2.connect(database="kati85_shila_copycat", user="kati85", password="Rahxepho", host="141.82.60.28", port="5432")
+      
+      self.db = adbapi.ConnectionPool(
+           'psycopg2',
+      	   database = 'kati85_shila_copycat',
+      	   user = 'kati85',
+      	   port = '5432',
+      	   password = 'Rahxepho',
+      	   host = '141.82.60.28')
+      print "Opened database successfully"
       
       self.db.runOperation('''/*****************************************************************************
                              * Alte Tabellen (in der richtigen Reihenfolge) löschen

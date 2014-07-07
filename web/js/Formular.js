@@ -14,27 +14,26 @@
    * @name  $cc$.game.formular
    */
   
-  function formular(init, app)
+  function Formular(p_init, p_app)
   {
     var loginForm      = document.getElementById("Login"),
         regForm        = document.getElementById("Registrierung"),
         loginFunktion  = this.login,
         regFunktion    = this.registrierung,
         weiterFunktion = this.weiterleiten,
-        test = app;
+        connection = p_app.connection;
     
-    this.init = init;
-    this.app = app;
+    this.init = p_init;
     
-    loginForm.onsubmit = function(){return loginFunktion(weiterFunktion, test);};
-    regForm.onsubmit   = function(){return regFunktion(weiterFunktion);};
+    loginForm.onsubmit = function(){return loginFunktion(weiterFunktion, connection);};
+    regForm.onsubmit   = function(){return regFunktion(weiterFunktion, connection);};
     
     
   };
   
-  formular.prototype =
+  Formular.prototype =
   {
-      login: function(weiterFunktion, app)
+      login: function(p_weiterFunktion, p_connection)
       {
         var meldung_log = document.Login;
         
@@ -50,25 +49,28 @@
           meldung_log.passwort_log.focus();
           return false;
         } else
-        {
-         var connection = app.connection; 
-          if (connection.session) {
-              connection.session.call("de.copycat.check_login", [meldung_log.benutzer_log.value, meldung_log.passwort_log.value]).then(
-                 function (success) {
-                    console.log("success");
+        { 
+          if (p_connection.session) {
+              p_connection.session.call("de.copycat.check_login", [meldung_log.benutzer_log.value, meldung_log.passwort_log.value]).then(
+                 function (success)
+                 {
+                   if (success)
+                   {
+                     p_weiterFunktion();
+                   } else {
+                     alert("Benutzername oder Passwort sind falsch!");
+                     //überprüfen wo fehler ist!
+                   }
                  },
-                 connection.session.log
+                 p_connection.session.log
               );
-           } else {
-              console.log("can't vote: no connection");
            }
-            //weiterFunktion();
             return false;
           };
         
       },
       
-      registrierung: function(weiterFunktion)
+      registrierung: function(p_weiterFunktion, p_connection)
       {
         var meldung_reg = document.Registrierung;
         
@@ -100,17 +102,36 @@
           return false;
         } else
         {
-          alert("alles toll");
-          weiterFunktion();
+          if(p_connection.session)
+          {
+            p_connection.session.call("de.copycat.check_registrierung",
+                 [meldung_reg.benutzer_reg.value, meldung_reg.email.value, meldung_reg.passwort_reg.value]).then(
+                     function(fehler)
+                     {
+                       if(fehler)
+                       {
+                         alert(fehler + " nicht verfügbar!");
+                       } else
+                       {
+                         alert("Erfolgreich registriert");
+                         weiterFunktion();
+                       }
+                     }
+            );
+          }
           return false;
         };
       },
       
-      weiterleiten: function() {window.location.href = "http://localhost:8080/copycat.html";}
+      weiterleiten: function()
+      {
+        console.log("weiter");
+        window.location.href = "http://localhost:8080/copycat.html";
+      }
   };
 
   
     // Im Package platzieren
-  $cc$.game.formular = formular;
+  $cc$.game.formular = Formular;
 
 }(this.$cc$, this.document));

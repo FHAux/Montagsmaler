@@ -14,6 +14,19 @@ h1{
 	margin: 20px 0 10px 0;
 }
 
+h2{
+	font-size: 90%;
+	margin: 20px 0 10px 0;
+}
+
+a{
+	color: #000;
+}
+
+a:hover{
+	text-decoration: none;
+}
+
 button, textarea, input, p{
 	font-family: Verdana, sans-serif;
 	font-size: 0.8em;
@@ -26,7 +39,7 @@ table td{
 }
 
 table .right_col input{
-	width: 200px;
+	width: 310px;
 }
 
 .stern{
@@ -47,9 +60,6 @@ input#clearBtn{
 }
 
 /** Main ANFANG **/
-header{
-	margin-bottom: 10px;
-}
 
 #wrapper{
   width: 960px;
@@ -59,9 +69,43 @@ header{
   border: #999 solid 1px;
 }
 
-#main{
-	margin-top: 30px;
+#main_game{
+	margin-top: 15px;
+	overflow: auto;
 }
+
+#main{
+	position: relative;
+}
+
+#main .cat{
+	position: absolute;
+	right: 20px;
+	top: 0px;
+}
+
+/** Anmeldung ANFANG **/
+
+#log_reg{
+	width: 900px;
+	padding: 20px 30px;
+	margin: 0 auto;
+	border: #999 solid 1px;
+	overflow: auto;
+}
+
+.log{
+  float: left;
+  width: 430px;
+  margin-right: 35px;
+}
+
+.reg{
+  width: 430px;
+  overflow: hidden;
+}
+
+/** Anmeldung ENDE **/
 
 /** Chat ANFANG **/
 .left{
@@ -147,3 +191,16 @@ canvas {
 
 
 /** Main ENDE **/
+
+/** Footer ANFANG **/
+
+footer{
+	width: 960px;
+  	margin: 0 auto;
+}
+
+footer p{
+	float: right;
+}
+
+/** Footer ENDE **/

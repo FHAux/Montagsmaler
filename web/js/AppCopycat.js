@@ -7,17 +7,16 @@
 
 (function($cc$, window, document)
 {
-  function appCopycat(init)
+  function AppCopycat(p_init, p_eingeloggt)
   {
     /**
      * @class
      * @name $cc$.game.AppCopycat
-     */
-    
-    // Zeichenklasse initialisieren
-   /* var zeichnen = new $cc$.game.zeichnen(this, init),
-        chat = new $cc$.game.chat(this),*/
+     */    
     var canvas = document.getElementById("zeichenflaeche");
+    this.init = p_init;
+    this.eingeloggt = p_eingeloggt;
+    that = this;
     
     AUTOBAHN_DEBUG = true;
     DEBUG = false;
@@ -32,6 +31,14 @@
     this.connection.onopen = function(session)
     {
       console.log("session established!");
+    
+        // Klassen initialisieren
+        if(p_eingeloggt)
+        {
+          var zeichnen = new $cc$.game.zeichnen(that, p_init),
+              chat     = new $cc$.game.chat(that);
+        }
+
 
       /**
        * @method
@@ -85,7 +92,8 @@
        */
       function onsenden(eingabe)
       {
-        chat.anzeigen(eingabe, "black");
+        chat.anzeigen(eingabe[1] + ": ", "#7CCD7C");
+        chat.anzeigen(eingabe[0], "black");
       };
       
       /**
@@ -159,20 +167,16 @@
       
       /**
        * @method
-       * @name  $cc$.game.main#onverwarnen
+       * @name  $cc$.game.main#onaufgeben
        * 
-       * @param {Object} verwarnt
-       *        Enthält einen Boolean, der anzeigt, ob der Zeichner bereits
-       *        verwarnt wurde
-       * 
-       * Wird ausgeführt wenn auf einem anderen Client der Zeichner verwarnt
-       * wurde und zeigt das Pop-Up auf dem aktuellen Client ebenfalls an.
+       * Wird ausgeführt wenn der Zeichner aufgibt und beendet die Zeichenrunde.
        */
-      function onlogin(boolean)
+      function onnutzerAnzeigen(results)
       {
-        console.log(boolean);
+        console.log(results);
+        chat.mitspieler_anzeigen();
       };
-
+      
       // Für die verschiedenen Themen registrieren
       //
       session.subscribe('de.copycat.mousedown', onmousedown).then(
@@ -247,7 +251,7 @@
             console.log(error);
       });
       
-      session.subscribe('de.copycat.login', onlogin).then(
+      session.subscribe('de.copycat.nutzer_anzeigen', onnutzerAnzeigen).then(
           function(subscription)
           {
             //console.log("ok, subscribed with ID " + subscription.id);
@@ -255,7 +259,6 @@
           {
             console.log(error);
       });
-
     };
 
     // Wird ausgeführt wenn die Verbindung abbricht
@@ -269,8 +272,8 @@
 
   }
 
-  appCopycat.prototype =
-  {
+  AppCopycat.prototype =
+  { 
     /**
      * @method
      * @name  $cc$.game.main#publishmousedown
@@ -281,12 +284,12 @@
      * Wird ausgeführt wenn die Maustaste innerhalb der Zeichenfläche gedrückt
      * wird und überträgt die Mausposition zum Server.
      */
-    publishmousedown : function(mousePos)
+    publishmousedown : function(p_mousePos)
     {
       if (this.connection.session)
       {
         this.connection.session.publish("de.copycat.mousedown",
-        [ mousePos ]);
+        [ p_mousePos ]);
       } else
       {
         console.log("cannot publish: no session");
@@ -303,12 +306,12 @@
      * Wird ausgeführt wenn die Maustaste innerhalb der Zeichenfläche gedrückt
      * ist und die Maus bewegt wird und überträgt die Mausposition zum Server.
      */
-    publishmousemove : function(mousePos)
+    publishmousemove : function(p_mousePos)
     {
       if (this.connection.session)
       {
         this.connection.session.publish("de.copycat.mousemove",
-        [ mousePos ]);
+        [ p_mousePos ]);
       } else
       {
         console.log("cannot publish: no session");
@@ -325,12 +328,12 @@
      * Wird ausgeführt wenn die Chateingabe gesendet wird und überträgt die
      * Eingabe an den Server.
      */
-    publishsenden : function(eingabe)
+    publishsenden : function(p_eingabe, p_nickname)
     {
       if (this.connection.session)
       {
         this.connection.session.publish("de.copycat.senden",
-        [ eingabe ]);
+        [ p_eingabe, p_nickname ]);
       } else
       {
         console.log("cannot publish: no session");
@@ -347,12 +350,12 @@
      * Wird ausgeführt wenn die Farbe gewechselt wird und überträgt die
      * ausgewählte Farbe.
      */
-    publishfarbauswahl : function(farbe)
+    publishfarbauswahl : function(p_farbe)
     {
       if (this.connection.session)
       {
         this.connection.session.publish("de.copycat.farbauswahl",
-        [ farbe ]);
+        [ p_farbe ]);
       } else
       {
         console.log("cannot publish: no session");
@@ -386,12 +389,12 @@
      * Wird ausgeführt wenn die Stärke gewechselt wird und überträgt die
      * ausgewählte Stärke.
      */
-    publishstaerkeauswahl : function(staerke)
+    publishstaerkeauswahl : function(p_linienstaerke)
     {
       if (this.connection.session)
       {
         this.connection.session.publish("de.copycat.staerkeauswahl",
-        [ staerke ]);
+        [ p_linienstaerke ]);
       } else
       {
         console.log("cannot publish: no session");
@@ -409,7 +412,7 @@
      * Wird ausgeführt wenn auf einem anderen Client der Zeichner verwarnt
      * wurde und überträgt den Boolean verwarnt.
      */
-    publishverwarnen : function(verwarnt)
+    publishverwarnen : function(p_verwarnt)
     {
       if (this.connection.session)
       {
@@ -441,6 +444,6 @@
   };
 
   // Im Package platzieren
-  $cc$.game.appCopycat = appCopycat;
+  $cc$.game.AppCopycat = AppCopycat;
 
 }(this.$cc$, this.window, this.document));

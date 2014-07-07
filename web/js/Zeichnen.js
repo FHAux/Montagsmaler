@@ -18,7 +18,7 @@
    * @param {Object} init
    *        Die JSON-Datei
    */
-  function zeichnen(main, init)
+  function Zeichnen(p_app, p_init)
   {
     var rot = document.getElementById("rotBtn"),
         gruen = document.getElementById("gruenBtn"),
@@ -38,92 +38,92 @@
     this.canvas = document.getElementById("zeichenflaeche");
     this.context = this.canvas.getContext("2d");
     this.isDown = false; // ist die Maustaste noch gedrückt
-    this.init = init;
-    this.aktFarbe = init.farben.schwarz;
-    this.aktStaerke = init.linienstaerken.normal;
+    this.init = p_init;
+    this.aktFarbe = p_init.farben.schwarz;
+    this.aktStaerke = p_init.linienstaerken.normal;
    
     // Buttonlistener
     rot.addEventListener("click", (function()
     {
       this.farbAuswahl("rot");
-      main.publishfarbauswahl("rot");
+      p_app.publishfarbauswahl("rot");
     }).bind(this));
     
     gruen.addEventListener("click", (function()
     {
       this.farbAuswahl("gruen");
-      main.publishfarbauswahl("gruen");
+      p_app.publishfarbauswahl("gruen");
     }).bind(this));
     
     blau.addEventListener("click", (function()
     {
       this.farbAuswahl("blau");
-      main.publishfarbauswahl("blau");
+      p_app.publishfarbauswahl("blau");
     }).bind(this));
     
     gelb.addEventListener("click", (function()
     {
       this.farbAuswahl("gelb");
-      main.publishfarbauswahl("gelb");
+      p_app.publishfarbauswahl("gelb");
     }).bind(this));
     
     lila.addEventListener("click", (function()
     {
       this.farbAuswahl("lila");
-      main.publishfarbauswahl("lila");
+      p_app.publishfarbauswahl("lila");
     }).bind(this));
     
     grau.addEventListener("click", (function()
     {
       this.farbAuswahl("grau");
-      main.publishfarbauswahl("grau");
+      p_app.publishfarbauswahl("grau");
     }).bind(this));
     
     schwarz.addEventListener("click", (function()
     {
       this.farbAuswahl("schwarz");
-      main.publishfarbauswahl("schwarz");
+      p_app.publishfarbauswahl("schwarz");
     }).bind(this));
     
     weiss.addEventListener("click", (function()
         {
           this.farbAuswahl("weiss");
-          main.publishfarbauswahl("weiss");
+          p_app.publishfarbauswahl("weiss");
         }).bind(this));
     
     clear.addEventListener("click", (function()
     {
       this.clear(this.canvas);
-      main.publishclear();
+      p_app.publishclear();
     }).bind(this));
     
     duenn.addEventListener("click", (function()
     {
       this.staerkeAuswahl("duenn");
-      main.publishstaerkeauswahl("duenn");
+      p_app.publishstaerkeauswahl("duenn");
     }).bind(this));
     
     normal.addEventListener("click", (function()
     {
       this.staerkeAuswahl("normal");
-      main.publishstaerkeauswahl("normal");
+      p_app.publishstaerkeauswahl("normal");
     }).bind(this));
     
     breit.addEventListener("click", (function()
     {
       this.staerkeAuswahl("breit");
-      main.publishstaerkeauswahl("breit");
+      p_app.publishstaerkeauswahl("breit");
     }).bind(this));
     
     fett.addEventListener("click", (function()
     {
       this.staerkeAuswahl("fett");
-      main.publishstaerkeauswahl("fett");
+      p_app.publishstaerkeauswahl("fett");
     }).bind(this));
     
     aufgeben.addEventListener("click", (function(){
       this.aufgeben();
-      main.publishaufgeben();
+      p_app.publishaufgeben();
     }).bind(this));
     
     // Mauslistener
@@ -132,7 +132,7 @@
       var mousePos = this.getMousePos(event, this.canvas);
       this.begin(mousePos);
       this.isDown = true;
-      main.publishmousedown(mousePos);
+      p_app.publishmousedown(mousePos);
     }).bind(this));
 
     document.addEventListener("mousemove", (function(event)
@@ -141,7 +141,7 @@
       {
         var mousePos = this.getMousePos(event, this.canvas);
         this.moveOn(mousePos);
-        main.publishmousemove(mousePos);
+        p_app.publishmousemove(mousePos);
       }
     }).bind(this));
 
@@ -151,7 +151,7 @@
     }).bind(this));
   };
 
-  zeichnen.prototype =
+  Zeichnen.prototype =
   {
     /**
      * @method
@@ -164,12 +164,12 @@
      * 
      * Gibt die Mausposition relativ zur Zeichenfläche wieder.
      */
-    getMousePos : function(event, canvas)
+    getMousePos : function(p_event, p_canvas)
     {
-      var rect = canvas.getBoundingClientRect();
+      var rect = p_canvas.getBoundingClientRect();
       return {
-        x : event.clientX - rect.left,
-        y : event.clientY - rect.top
+        x : p_event.clientX - rect.left,
+        y : p_event.clientY - rect.top
       };
     },
 
@@ -182,10 +182,10 @@
      * 
      * Beginnt einen neuen Pfad.
      */
-    begin : function(mousePos)
+    begin : function(p_mousePos)
     {
       this.context.beginPath();
-      this.context.moveTo(mousePos.x, mousePos.y);
+      this.context.moveTo(p_mousePos.x, p_mousePos.y);
     },
 
     /**
@@ -197,9 +197,9 @@
      * 
      * Zeichnet den Pfad.
      */
-    moveOn : function(mousePos)
+    moveOn : function(p_mousePos)
     {
-      this.context.lineTo(mousePos.x, mousePos.y);
+      this.context.lineTo(p_mousePos.x, p_mousePos.y);
       this.context.strokeStyle = this.aktFarbe;
       this.context.lineWidth = this.aktStaerke;
       this.context.stroke();
@@ -214,9 +214,9 @@
      * 
      * Setzt die aktuelle Farbe auf die ausgewählte Farbe.
      */
-    farbAuswahl: function(farbe)
+    farbAuswahl: function(p_farbe)
     {
-      switch(farbe)
+      switch(p_farbe)
       {
         case "rot":
           this.aktFarbe = this.init.farben.rot;
@@ -243,7 +243,7 @@
           this.aktFarbe = this.init.farben.weiss;
           break;
         default:
-          console.log("Falsche Farbe:" + farbe);
+          console.log("Falsche Farbe:" + p_farbe);
       }
     },
     
@@ -253,9 +253,9 @@
      * 
      * Setzt die Zeichenfläche zurück.
      */
-    clear : function(canvas)
+    clear : function(p_canvas)
     {
-      this.context.clearRect(0, 0, canvas.width, canvas.height);
+      this.context.clearRect(0, 0, p_canvas.width, p_canvas.height);
     },
     
     /**
@@ -267,9 +267,9 @@
      * 
      * Setzt die aktuelle Stärke auf die ausgewählte Stärke.
      */
-    staerkeAuswahl: function(staerke)
+    staerkeAuswahl: function(p_linienstaerke)
     {
-      switch(staerke)
+      switch(p_linienstaerke)
       {
         case "duenn":
           this.aktStaerke = this.init.linienstaerken.duenn;
@@ -284,7 +284,7 @@
           this.aktStaerke = this.init.linienstaerken.fett;
           break;
         default:
-          console.log("Falsche Stärke:" + staerke);
+          console.log("Falsche Stärke:" + p_linienstaerke);
       }
     },
     
@@ -302,6 +302,6 @@
   };
 
   // Im Package platzieren
-  $cc$.game.zeichnen = zeichnen;
+  $cc$.game.zeichnen = Zeichnen;
 
 }(this.$cc$, this.document));

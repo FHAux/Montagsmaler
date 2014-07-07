@@ -19,13 +19,12 @@ this.$cc$ =
      * @class
      * @name $cc$.game.main
      */
-    
     if(window.location.href == "http://localhost:8080/copycat.html")
     {
-      new $cc$.game.appCopycat(init);
+      new $cc$.game.AppCopycat(init, true);
     } else
     {
-      var app = new $cc$.game.appCopycat(init);
+      var app = new $cc$.game.AppCopycat(init, false);
       new $cc$.game.formular(init, app);
     }
   };
