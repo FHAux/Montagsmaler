@@ -300,14 +300,14 @@ class Copycat(ApplicationSession):
 
    nutzername = ""
 
-   def login(self, name, passwort):
+   def check_login(self, name, passwort):
       def run(txn):
          txn.execute("SELECT nickname, passwort FROM spieler WHERE nickname=%s AND passwort=%s", [name, passwort])
          success = False
          for row in txn.fetchall():
              success = True
-         if(success):
-             txn.execute("UPDATE spieler SET eingeloggt = TRUE WHERE nickname=%s AND passwort=%s", [name, passwort])
+         txn.execute("UPDATE spieler SET eingeloggt = TRUE WHERE nickname=%s", [name])
+         self.publish("de.copycat.login_logout")
          return success 
       self.nutzername = name 
       return self.db.runInteraction(run)  
@@ -325,7 +325,8 @@ class Copycat(ApplicationSession):
               fehler = "Email-Adresse"
           if(fehler != False):
               return fehler
-          txn.execute("INSERT INTO spieler(nickname, email, passwort) VALUES (%s, %s, %s)", [name, email, passwort])  
+          txn.execute("INSERT INTO spieler(nickname, email, passwort, eingeloggt) VALUES (%s, %s, %s, TRUE)", [name, email, passwort])
+          self.publish("de.copycat.login_logout")  
           self.nutzername = name
       return self.db.runInteraction(run)
     
@@ -338,24 +339,26 @@ class Copycat(ApplicationSession):
          results = []
          for row in txn.fetchall():
              results.append(row)
-         self.publish("de.copycat.nutzer_anzeigen", results)
          return results
        return self.db.runInteraction(run)  
    
-   def ausloggen(self):
-       print "ausloggen"
-       def run(txn):
-         txn.execute("UPDATE spieler SET eingeloggt = FALSE WHERE nickname = %s", [self.nutzername])
-       return self.db.runInteraction(run)  
+   
       
    @inlineCallbacks
-   def onJoin(self, details):    
+   def onJoin(self, details):   
+        
+      def ausloggen(spieler):
+          def run(txn):
+             txn.execute("UPDATE spieler SET eingeloggt = FALSE WHERE nickname = %s", [spieler])
+             self.publish("de.copycat.login_logout")
+          return self.db.runInteraction(run)
+     
       try:
-         yield self.register(self.login, "de.copycat.check_login")
+         yield self.register(self.check_login, "de.copycat.check_login")
          yield self.register(self.registrierung, "de.copycat.check_registrierung")
          yield self.register(self.angemeldeterNutzer, "de.copycat.check_nutzername")
          yield self.register(self.nutzerAnzeigen, "de.copycat.nutzer_anzeigen")
-         yield self.subscribe(self.ausloggen, "wamp.metaevent.session.on_leave")
+         yield self.register(ausloggen, "de.copycat.ausloggen")
          print("Ok, registered {} procedures.")
       except Exception as e:
          print("Failed to register procedures: {}".format(e))
@@ -364,64 +367,6 @@ class Copycat(ApplicationSession):
       
    def onDisconnect(self):
       reactor.stop()
-
-      
-   #print "Operation done successfully"
-   #db.close()
-   
-   ##@wamp.procedure("com.copycat.get_votes")
-   ##def get_votes(self):
-      ##def run(txn):
-        ## txn.execute("SELECT item, count FROM votes")
-         ##res = {}
-         ##for row in txn.fetchall():
-          ##  res[row[0]] = row[1]
-         ##return res
-      ##return self.db.runInteraction(run)
-
-
-   ##@wamp.procedure("com.copycat.vote")
-   ##def vote(self, item):
-     ## if not item in self.config.extra['items']:
-         ##raise ApplicationError("com.votegame.error.no_such_item", "no item '{}' to vote on".format(item))
-
-     ## def run(txn):
-         ## FIXME: make the following into 1 (atomic) SQL statement
-         ## => does SQLite feature "UPDATE .. RETURNING"?
-       ##  txn.execute("UPDATE votes SET count = count + 1 WHERE item = ?", [item])
-       ##  txn.execute("SELECT count FROM votes WHERE item = ?", [item])
-       ##  count = int(txn.fetchone()[0])
-
-       ##  self.publish("com.votegame.onvote", item, count,
-       ##     options = PublishOptions(excludeMe = False))
-
-       ##  return count
-
-     ## return self.db.runInteraction(run)
-
-
-
-  ## @inlineCallbacks
-  ## def onJoin(self, details):
-
-    ##  def onvote(item, count):
-      ##   print("New vote on '{}': {}".format(item, count))
-
-     ## yield self.subscribe(onvote, 'com.votegame.onvote')
-
-     ## try:
-       ##  regs = yield self.register(self)
-       ##  print("Ok, registered {} procedures.".format(len(regs)))
-     ## except Exception as e:
-       ##  print("Failed to register procedures: {}".format(e))
-
-     ## print("VoteGame Backend ready!")
-
-
-
-  ## def onDisconnect(self):
-    ##  reactor.stop()
-
 
 
 def make(config):
